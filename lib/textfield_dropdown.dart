@@ -1,6 +1,5 @@
 library textfield_dropdown;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldDropdown extends StatefulWidget {
@@ -8,7 +7,6 @@ class TextFieldDropdown extends StatefulWidget {
   final TextInputType textInputType;
   final ValueChanged<String> onChanged;
   final InputDecoration decoration;
-  final Widget dropDownItem;
   final List<String> items;
   final FormFieldValidator<String> validator;
 
@@ -18,7 +16,6 @@ class TextFieldDropdown extends StatefulWidget {
       this.textInputType = TextInputType.text,
       this.onChanged,
       this.decoration,
-      this.dropDownItem ,
       this.items,
       this.validator})
       : assert(controller != null ),
@@ -31,7 +28,6 @@ class TextFieldDropdown extends StatefulWidget {
     return _TextFieldDropdownState(
         controller: controller,
         decoration: decoration,
-        dropDownItem: dropDownItem,
         onChanged: onChanged,
         textInputType: textInputType,
         items: items,
@@ -44,7 +40,6 @@ class _TextFieldDropdownState extends State<TextFieldDropdown> {
   final TextInputType textInputType;
   final ValueChanged<String> onChanged;
   final InputDecoration decoration;
-  final Widget dropDownItem;
   final List<String> items;
   final FormFieldValidator<String> validator;
 
@@ -53,7 +48,6 @@ class _TextFieldDropdownState extends State<TextFieldDropdown> {
       this.textInputType,
       this.onChanged,
       this.decoration,
-      this.dropDownItem,
       this.items,
       this.validator});
 
@@ -69,20 +63,27 @@ class _TextFieldDropdownState extends State<TextFieldDropdown> {
           decoration: decoration,
           validator: validator,
         ),
-        ListView.builder(
-            shrinkWrap: true,
-            itemCount: items.length,
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                  onTap: () {
-                    setState(() {
-                      controller.text = items[index];
-                      items.clear();
-                    });
-                  },
-                  child: dropDownItem);
-            }),
+        Expanded(
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: items.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                    onTap: () {
+                      setState(() {
+                        controller.text = items[index];
+                        items.clear();
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(items[index]),
+                    ));
+              }),
+        ),
       ],
     );
   }
+
+
 }
